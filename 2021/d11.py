@@ -1,6 +1,8 @@
 from pandas import DataFrame
 import os
 from time import sleep
+from colorama import init,Fore, Back, Style
+init()
 
 octopi = []
 with open('d11_input.txt', 'r') as f:
@@ -16,9 +18,27 @@ def need_to_flash():
 			return True
 	return False
 
+colors = {
+	0: Back.WHITE,
+	1: Back.LIGHTRED_EX,
+	2: Back.YELLOW,
+	3: Back.LIGHTMAGENTA_EX,
+	4: Back.LIGHTGREEN_EX,
+	5: Back.GREEN,
+	6: Back.CYAN,
+	7: Back.BLUE,
+	8: Back.MAGENTA,
+	9: Back.RED,
+}
 def clear_and_print():
 	os.system('cls')
-	print(DataFrame(octopi))
+	# print(DataFrame(octopi))
+	pretty = ""
+	for row in octopi:
+		for pi in row:
+			pretty += colors[pi] + str(pi)
+		pretty += "\n"
+	print(pretty + Back.RESET, end='') 
 
 flashed = []; total_flashes = 0
 def flash(y,x):
@@ -55,6 +75,6 @@ while not simultaneous_flashed():
 		octopi[y][x] = 0
 	clear_and_print()
 	print(count,'/?', sep='')
-	sleep(.05)
+	sleep(.2)
 
 
