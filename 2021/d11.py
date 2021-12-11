@@ -3,7 +3,7 @@ import os
 from time import sleep
 
 octopi = []
-with open('d11_testinput.txt', 'r') as f:
+with open('d11_input.txt', 'r') as f:
 	lines = [j[:-1] for j in f.readlines() if j != '\n']
 	for l in lines:
 		octopi.append(list(map(int,l)))
@@ -31,9 +31,18 @@ def flash(y,x):
 			octopi[y+a][x+b] += 1
 			if octopi[y+a][x+b] > 9:
 				flash(y+a,x+b)
+#part2
+def simultaneous_flashed():
+	for row in octopi:
+		if sum(row) > 0: 
+			return False
+	return True
+
+count = 0
 
 #part1
-for i in range(100):
+while not simultaneous_flashed():
+	count += 1
 	flashed = []
 	for row in range(len(octopi)): 
 		octopi[row] = [r + 1 for r in octopi[row]]
@@ -45,8 +54,7 @@ for i in range(100):
 	for (y,x) in flashed:
 		octopi[y][x] = 0
 	clear_and_print()
-	print(i+1,'/100', sep='')
-	sleep(.1)
-print(total_flashes)
+	print(count,'/?', sep='')
+	sleep(.05)
 
-#part2
+
